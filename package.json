@@ -1,0 +1,23 @@
+{
+  "name": "sherlock-tetris",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "budo": "^11.6.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "budo src/main.js --live"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jonathantvrs/tetris-sherlock.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jonathantvrs/tetris-sherlock/issues"
+  },
+  "homepage": "https://github.com/jonathantvrs/tetris-sherlock#readme"
+}
