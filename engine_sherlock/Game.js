@@ -27,14 +27,9 @@ class Game {
             dt = Math.min(t - last, MAX_FRAME);
             last = t;
 
-            if (t - lastUpdate >= 1) {
-                lastUpdate = t;
-
-                this.scene.update(dt, t);
-                gameUpdate(dt, t);
-                this.renderer.render(this.scene);
-            }
-            
+            this.scene.update(dt, t);
+            gameUpdate(dt, t);
+            this.renderer.render(this.scene);
         };
 
         requestAnimationFrame(loop);

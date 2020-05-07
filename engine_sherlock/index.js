@@ -5,6 +5,7 @@ import Text from "./utils/Text.js"
 import Texture from "./utils/Texture.js"
 import Sprite from "./utils/Sprite.js"
 import Piece from "./Piece.js"
+import Board from "./Board.js"
 import Game from "./Game.js"
 
 export default { 
@@ -14,6 +15,7 @@ export default {
     Texture,
     Sprite,
     Piece,
+    Board,
     KeyControls,
     Game
 }; 
