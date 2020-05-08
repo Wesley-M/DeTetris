@@ -1,4 +1,3 @@
-import pieces_states from "../res/config/pieces_states.js"
 import Piece from "./Piece.js";
 import Collider from "./utils/Collider.js"
 
@@ -19,16 +18,9 @@ export default class Board {
     }
 
     spawn() {
-        let randomState = this.randomPieceStates();
-        let position = {x: Math.floor((this.dim.width / 2) - randomState[0].length / 2), y: 0};
-        this.activePiece = new Piece(randomState, position);
+        let position = {x: Math.floor(this.dim.width / 2), y: 0};
+        this.activePiece = new Piece(position);
     }
-
-    randomPieceStates() {
-        let keys = Object.keys(pieces_states);
-        let randomIndex = keys[ Math.round(Math.random() * 100) % keys.length ];
-        return pieces_states[randomIndex];
-    };
 
     movePiece(dir) {
         let moved = false;
@@ -103,17 +95,17 @@ export default class Board {
     }
 
     rotatePiece() {
-        let oldState = this.activePiece.currentState;
+        let oldState = this.activePiece.state;
 
         this.erasePiece();
 
-        this.activePiece.changeState();
+        this.activePiece.rotate();
 
         let collisionBorder = this.collider.getBorderCollision(this.activePiece);
         let collisionPiece = this.collider.getPieceCollision(this.activePiece);
 
         if (collisionBorder != false || collisionPiece != false) {
-            this.activePiece.currentState = oldState;
+            this.activePiece.state = oldState;
             if (collisionBorder != false && collisionPiece != false) {
                 // Do nothing, we cannot recover!
             } else if (collisionBorder != false) {
@@ -168,13 +160,13 @@ export default class Board {
         const board = this.state;
         const piecePos = this.activePiece.position;
 
-        const horizontalLength = this.activePiece.states[this.activePiece.currentState][0].length;
-        const verticalLength = this.activePiece.states[this.activePiece.currentState].length;
+        const horizontalLength = this.activePiece.state[0].length;
+        const verticalLength = this.activePiece.state.length;
 
         const xlim = { start: piecePos.x, end: piecePos.x + horizontalLength};
         const ylim = { start: piecePos.y, end: piecePos.y + verticalLength};
         
-        let piece = this.activePiece.states[this.activePiece.currentState];
+        let piece = this.activePiece.state;
 
         for (let i = ylim.start; i < ylim.end; i++) {
             for (let j = xlim.start; j < xlim.end; j++) {

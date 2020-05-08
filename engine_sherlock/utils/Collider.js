@@ -48,12 +48,12 @@ export default class Collider {
     }
 
     rightBoardCollision (piece, offset) {
-        const horizontalLength = piece.states[piece.currentState][0].length;
+        const horizontalLength = piece.state[0].length;
         return (piece.position.x + offset.x + horizontalLength > this.board.dim.width);
     }
 
     downBoardCollision (piece, offset) {
-        const verticalLength = piece.states[piece.currentState].length;
+        const verticalLength = piece.state.length;
         return (piece.position.y + offset.y + verticalLength > this.board.dim.height);
     }
 
@@ -70,13 +70,13 @@ export default class Collider {
     }
 
     adjacentPieceCollision ({piece, offset, orCondition, andCondition}) {
-        const horizontalLength = piece.states[piece.currentState][0].length;
-        const verticalLength = piece.states[piece.currentState].length;
+        const horizontalLength = piece.state[0].length;
+        const verticalLength = piece.state.length;
 
         const currY = piece.position.y;
         const currX = piece.position.x;
 
-        const pieceMtx = piece.states[piece.currentState];
+        const pieceMtx = piece.state;
 
         if (orCondition == undefined) orCondition = false;
         if (andCondition == undefined) andCondition = true;
