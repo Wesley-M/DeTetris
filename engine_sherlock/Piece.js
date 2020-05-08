@@ -3,10 +3,10 @@ import KeyControls from "./controls/KeyControls.js"
 const controls = new KeyControls();
 
 export default class Piece {
-    constructor(states) {
+    constructor(states, position) {
         this.states = states;
         this.currentState = 0;
-        this.position = {x: 0, y: 0};
+        this.position = position;
         this.disabled = false;
     }
 

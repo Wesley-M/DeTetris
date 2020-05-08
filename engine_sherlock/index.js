@@ -6,7 +6,6 @@ import Texture from "./utils/Texture.js"
 import Sprite from "./utils/Sprite.js"
 import Piece from "./Piece.js"
 import Board from "./Board.js"
-import Game from "./Game.js"
 
 export default { 
     Container,
@@ -16,6 +15,5 @@ export default {
     Sprite,
     Piece,
     Board,
-    KeyControls,
-    Game
+    KeyControls
 }; 

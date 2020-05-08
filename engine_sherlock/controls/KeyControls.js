@@ -1,43 +1,53 @@
 export default class KeyControls {
     constructor () {
-        this.actions = {};
+        this.actions = [];
+        this.keyPressed = false;
     }
 
-    addAction(keyCode, action) {
-        this.actions[keyCode] = action;
+    addKeyAction(event, keyCode, action, triggerOnceInPressedKey) {
+        this.actions.push({keyCode: keyCode, run: action, event: event, triggerOnce: triggerOnceInPressedKey});
     }
 
     init() {
-        let spacePressed = false;
-        // Bind event handlers
+        let keyDownActions = this.actions.filter(action => action.event == "keydown");
+        let keyUpActions = this.actions.filter(action => (action.event == "keyup" || action.triggerOnce));
+
+        this.__addKeydownEvents(keyDownActions);
+        this.__addKeyupEvents(keyUpActions);
+    }
+
+    __addKeydownEvents(keyActions) {
         document.addEventListener("keydown", e => {
             const keyCode = e.which;
 
-            let keys = Object.keys(this.actions);
+            let action = keyActions.filter(keyAction => keyAction.keyCode == keyCode);
 
-            if (keys.includes(String(keyCode))) {
+            if (action.length != 0) {
                 e.preventDefault();
                 
-                if (!spacePressed) {
-                    if (keyCode == 32) spacePressed = true;
-                
+                if (!this.keyPressed) {
+                    if (action[0].triggerOnce) this.keyPressed = true;
+        
                     // Run action
-                    this.actions[keyCode]();
+                    action[0].run();
                 }
             }
 
         }, false);
+    }
 
+    __addKeyupEvents(keyActions) {
         document.addEventListener("keyup", e => {
             const keyCode = e.which;
 
-            let keys = Object.keys(this.actions);
+            let action = keyActions.filter(keyAction => keyAction.keyCode == keyCode);
 
-            if (keys.includes(String(keyCode))) {
+            if (action.length != 0) {
+
                 e.preventDefault();
-                if (keyCode == 32) spacePressed = false;
+                if (action[0].triggerOnce) this.keyPressed = false;
+                else action[0].run();
             }
-
         }, false);
     }
 }

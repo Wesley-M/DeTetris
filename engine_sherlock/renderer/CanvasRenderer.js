@@ -1,15 +1,28 @@
 import Text from "../utils/Text.js"
 import Texture from "../utils/Texture.js"
+import Sprite from "../utils/Sprite.js"
 import Board from "../Board.js"
 
 export default class CanvasRenderer {
     constructor (w, h) {
         const canvas = document.createElement("canvas");
+        
         this.w = canvas.width = w;
         this.h = canvas.height = h;
+        
         this.view = canvas;
+
         this.ctx = canvas.getContext("2d");
         this.ctx.textBaseline = "top";
+
+        this.pieceSide = 15;
+
+        this.block_gray_text = new Texture("../../res/images/gray_block.png");
+        this.block_icy_text = new Texture("../../res/images/icy_block.png");
+
+        this.blockGray = new Sprite(this.block_gray_text);
+        this.blockIcy = new Sprite(this.block_icy_text);
+
     }
 
     render(container, clear = true) {
@@ -38,7 +51,7 @@ export default class CanvasRenderer {
             this.renderLeaf(child, ctx);
 
             // Handle the child nodes
-            if (child.children) renderRec(child);
+            if (child.children) this.renderRec(ctx, child);
 
             ctx.restore();
         });
@@ -65,27 +78,23 @@ export default class CanvasRenderer {
     renderBoard(child, ctx) {
         let pos = {x: 0, y: 0};
         
-        const CELL_SIZE = 15;
-        
-        ctx.fillStyle = "white";
-        ctx.strokeStyle = "white";
+        ctx.fillStyle = "black";
+        ctx.strokeStyle = "rgba(189, 181, 75)";
 
         for (let line of child.state) {
             for (let column of line) {
                 ctx.save();
 
-                if (column == 1) ctx.fillStyle = "black";
-                    
-                ctx.fillRect(pos.x, pos.y, CELL_SIZE, CELL_SIZE);
-                ctx.strokeRect(pos.x, pos.y, CELL_SIZE, CELL_SIZE);
+                if (column == 1) ctx.drawImage(this.blockIcy.texture.img, pos.x, pos.y, this.pieceSide, this.pieceSide);
+                else ctx.drawImage(this.blockGray.texture.img, pos.x, pos.y, this.pieceSide, this.pieceSide);
 
                 ctx.restore();
 
-                pos.x += CELL_SIZE;
+                pos.x += this.pieceSide;
             }
 
             pos.x = 0;
-            pos.y += CELL_SIZE;
+            pos.y += this.pieceSide;
         }
     }
 }

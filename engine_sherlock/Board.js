@@ -12,11 +12,16 @@ export default class Board {
         this.lastUpdate = 0;
         this.activePiece = false;
         
+        this.velY = 1;
+        this.spawnTime = this.velY / 25;
+
         this.spawn();
     }
 
     spawn() {
-        this.activePiece = new Piece(this.randomPieceStates());
+        let randomState = this.randomPieceStates();
+        let position = {x: Math.floor((this.dim.width / 2) - randomState[0].length / 2), y: 0};
+        this.activePiece = new Piece(randomState, position);
     }
 
     randomPieceStates() {
@@ -37,9 +42,8 @@ export default class Board {
                 break;
             case "down":
                 moved = this.__moveDown();
+                if (!moved) this.removeCompleteLines(); 
         }
-
-        this.removeCompleteLines();
 
         return moved;
     }
@@ -82,7 +86,7 @@ export default class Board {
             this.updatePieceOnBoard(); 
             this.__checkSpawnCondition();
         } else {
-            this.scheduleSpawn = setTimeout(() => { this.spawn() }, 100);
+            this.scheduleSpawn = setTimeout(() => { this.spawn() }, this.spawnTime * 1000);
         }
 
         return !downCollision;
@@ -181,7 +185,7 @@ export default class Board {
     }
 
     update(dt, t) {
-        if (t - this.lastUpdate > 0.2) {
+        if (t - this.lastUpdate > this.velY) {
             this.lastUpdate = t;
             this.movePiece("down");
         }
