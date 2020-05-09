@@ -6,7 +6,7 @@ import Board from "../Board.js"
 export default class CanvasRenderer {
     constructor (w, h) {
         const canvas = document.createElement("canvas");
-        
+
         this.w = canvas.width = w;
         this.h = canvas.height = h;
         
@@ -16,13 +16,6 @@ export default class CanvasRenderer {
         this.ctx.textBaseline = "top";
 
         this.pieceSide = 15;
-
-        this.block_gray_text = new Texture("../../res/images/gray_block.png");
-        this.block_icy_text = new Texture("../../res/images/icy_block.png");
-
-        this.blockGray = new Sprite(this.block_gray_text);
-        this.blockIcy = new Sprite(this.block_icy_text);
-
     }
 
     render(container, clear = true) {
@@ -78,15 +71,27 @@ export default class CanvasRenderer {
     renderBoard(child, ctx) {
         let pos = {x: 0, y: 0};
         
-        ctx.fillStyle = "black";
-        ctx.strokeStyle = "rgba(189, 181, 75)";
+        let pieceColors = [
+            "black", "#E3B505", "#95190C", "#610345", "#107E7D", "#044B7F", "#6D1A36"
+        ];
+
+        ctx.strokeStyle = "rgba(128, 128, 128, 0.2)";
+        ctx.lineWidth = 0.5;
 
         for (let line of child.state) {
             for (let column of line) {
                 ctx.save();
 
-                if (column == 1) ctx.drawImage(this.blockIcy.texture.img, pos.x, pos.y, this.pieceSide, this.pieceSide);
-                else ctx.drawImage(this.blockGray.texture.img, pos.x, pos.y, this.pieceSide, this.pieceSide);
+                ctx.fillStyle = pieceColors[column];
+
+                ctx.fillRect(pos.x, pos.y, this.pieceSide, this.pieceSide);
+
+                if (column != 0) {
+                    ctx.lineWidth = 2;
+                    ctx.strokeStyle = "rgb(0, 0, 0)";
+                }
+
+                ctx.strokeRect(pos.x, pos.y, this.pieceSide, this.pieceSide);
 
                 ctx.restore();
 

@@ -17,7 +17,7 @@ class Game {
         this.renderer = new CanvasRenderer(w, h);
 
         this.scene = new Container();
-        this.board = new Board(w/this.renderer.pieceSide, h/this.renderer.pieceSide);
+        this.board = new Board(Math.floor(w/this.renderer.pieceSide), Math.floor(h/this.renderer.pieceSide));
 
         this.scene.add(this.board);
 
@@ -27,14 +27,36 @@ class Game {
     __initActions() {
         const controls = new KeyControls();
     
-        controls.addKeyAction("keydown", 37, () => { this.board.movePiece("left"); }, false);
-        controls.addKeyAction("keydown", 39, () => { this.board.movePiece("right"); }, false);
+        controls.addKeyAction("keydown", 37, () => {
+            this.__selectKey("#arrow_left");
+            this.board.movePiece("left"); 
+        }, false);
 
-        controls.addKeyAction("keydown", 40, () => { this.board.velY = 0.05; }, false);
-        controls.addKeyAction("keyup", 40, () => { this.board.velY = 0.5; }, false);
+        controls.addKeyAction("keydown", 39, () => { 
+            this.__selectKey("#arrow_right");
+            this.board.movePiece("right"); 
+        }, false);
 
-        controls.addKeyAction("keydown", 32, () => { this.board.rotatePiece(); }, true);
+        controls.addKeyAction("keydown", 40, () => { 
+            this.__selectKey("#arrow_down");
+            this.board.velY = 0.05; 
+        }, false);
+
+        controls.addKeyAction("keyup", 40, () => { this.board.velY = 0.3; }, false);
+
+        controls.addKeyAction("keydown", 32, () => { 
+            this.__selectKey("#space_bar");
+            this.board.rotatePiece(); 
+        }, true);
+
         controls.init();
+    }
+
+    __selectKey(el) {
+        document.querySelector(el).style.filter = "invert(100%)"; 
+        setTimeout(() => {
+            document.querySelector(el).style.filter = "invert(0%)";
+        }, 50);
     }
 
     run() {

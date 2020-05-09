@@ -11,7 +11,7 @@ export default class Board {
         this.lastUpdate = 0;
         this.activePiece = false;
         
-        this.velY = 1;
+        this.velY = 0.3;
         this.spawnTime = this.velY / 25;
 
         this.spawn();
@@ -71,7 +71,7 @@ export default class Board {
     __moveDown() {
         let collisions = this.collider.getCollisions(this.activePiece, {x: 0, y: 1});
         let downCollision = collisions.includes("down");
-
+    
         if (!downCollision) { 
             this.erasePiece();
             this.activePiece.position.y += 1;
@@ -104,11 +104,11 @@ export default class Board {
         let collisionBorder = this.collider.getBorderCollision(this.activePiece);
         let collisionPiece = this.collider.getPieceCollision(this.activePiece);
 
+        console.log(collisionBorder + " " + collisionPiece);
+
         if (collisionBorder != false || collisionPiece != false) {
             this.activePiece.state = oldState;
-            if (collisionBorder != false && collisionPiece != false) {
-                // Do nothing, we cannot recover!
-            } else if (collisionBorder != false) {
+            if (collisionBorder != false) {
                 this.__recover(collisionBorder);
             } else if (collisionPiece != false) {
                 this.__recover(collisionPiece);
@@ -135,7 +135,7 @@ export default class Board {
         let completeLine = false;
         for (let i = 0; i < this.dim.height; i++) {
             for (let j = 0; j < this.dim.width; j++) {
-                completeLine = (this.state[i][j] == 1);
+                completeLine = (this.state[i][j] != 0);
                 if (!completeLine) break;
             }
             if (completeLine) completeLines.push(i);
@@ -171,7 +171,7 @@ export default class Board {
         for (let i = ylim.start; i < ylim.end; i++) {
             for (let j = xlim.start; j < xlim.end; j++) {
                 const pieceCell = piece[i - ylim.start][j - xlim.start];
-                if (pieceCell == 1) board[i][j] = (removePiece) ? 0 : 1;
+                if (pieceCell != 0) board[i][j] = (removePiece) ? 0 : pieceCell;
             }
         }
     }

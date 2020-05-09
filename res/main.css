@@ -1,18 +1,118 @@
+* {
+    font-family: 'Courier New', Courier, monospace;
+}
+
 body {
     margin: 0;
     padding: 0;
     width: 100%;
     height: 100vh;
 
-    background-color: gray;
+    background-color: white;
 
     display: flex;
     align-items: center;
     justify-content: center;
+
+    box-sizing: border-box;
+}
+
+#main-container {
+    width: 25%;
+    height: 90vh;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#tutorial {
+    width: 100%;
+    height: 15vh;
+
+    display: flex;
+    flex-direction: row;
+}
+
+#tutorial span {
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 100%;
+    width: 25%;
+}
+
+#tutorial span img {
+    width: 20px;
+    height: 20px;
+
+    border-radius: 3px;
+    padding: 5px;
+    margin-right: 5px;
+    background-color: white;
+
+    transition: filter 100ms linear;
+}
+
+#game-container {
+    margin-top: 5%;
+    
+    width: 100%;
+    height: 55vh;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
 }
 
 #board {
-    width: 225px;
-    height: 450px;
-    border-radius: 5px;
+    width: 75%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+}
+
+#stats-container {
+    width: 20%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+#next-piece {
+    width: 100%;
+    height: 20%;
+}
+
+#stats {
+    width: 100%;
+    height: 75%;
+}
+
+#event-container {
+    margin-top: 5%;
+    width: 100%;
+    height: 15vh;
+}
+
+.box {
+    background-color: #272323;
+    border-radius: 4px; 
+    box-shadow: inset 0px 0px 4px 0px gray;
+}
+
+#bg-image {
+    width: 150px;
+    height: 300px;
+    position: absolute;
+    z-index: -99999;
 }
