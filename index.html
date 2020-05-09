@@ -7,7 +7,27 @@
     <title>Sherlock Tetris</title>
 </head>
 <body>
-    <div id="board"></div>
+    <div id="main-container">
+        <div id="tutorial" class="box">
+            <span> <img src="./res/images/space_bar.svg" id="space_bar" alt="space bar" title="Space: Rotate"></span>
+            <span> <img src="./res/images/arrow_down.svg" id="arrow_down" alt="arrow_down" title="Arrow down: Accelerate"></span>
+            <span> <img src="./res/images/arrow_left.svg" id="arrow_left" alt="arrow_left" title="Arrow left: Go to left"></span>
+            <span> <img src="./res/images/arrow_right.svg" id="arrow_right" alt="arrow_right" title="Arrow right: Go to right"></span>
+        </div>
+
+        <div id="game-container">
+            <div id="board" class="box"></div>
+            <div id="stats-container">
+                <div id="next-piece" class="box"></div>
+                <div id="stats" class="box"></div>
+            </div>
+        </div>
+
+        <div id="event-container" class="box">
+        </div>
+    </div>
+
     <script src="src/main.js" type="module"></script>
 </body>
 </html>
+

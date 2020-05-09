@@ -1,4 +1,3 @@
-import pieces_states from "../res/config/pieces_states.js"
 import Piece from "./Piece.js";
 import Collider from "./utils/Collider.js"
 
@@ -12,18 +11,16 @@ export default class Board {
         this.lastUpdate = 0;
         this.activePiece = false;
         
+        this.velY = 0.3;
+        this.spawnTime = this.velY / 25;
+
         this.spawn();
     }
 
     spawn() {
-        this.activePiece = new Piece(this.randomPieceStates());
+        let position = {x: Math.floor(this.dim.width / 2), y: 0};
+        this.activePiece = new Piece(position);
     }
-
-    randomPieceStates() {
-        let keys = Object.keys(pieces_states);
-        let randomIndex = keys[ Math.round(Math.random() * 100) % keys.length ];
-        return pieces_states[randomIndex];
-    };
 
     movePiece(dir) {
         let moved = false;
@@ -37,9 +34,8 @@ export default class Board {
                 break;
             case "down":
                 moved = this.__moveDown();
+                if (!moved) this.removeCompleteLines(); 
         }
-
-        this.removeCompleteLines();
 
         return moved;
     }
@@ -75,14 +71,14 @@ export default class Board {
     __moveDown() {
         let collisions = this.collider.getCollisions(this.activePiece, {x: 0, y: 1});
         let downCollision = collisions.includes("down");
-
+    
         if (!downCollision) { 
             this.erasePiece();
             this.activePiece.position.y += 1;
             this.updatePieceOnBoard(); 
             this.__checkSpawnCondition();
         } else {
-            this.scheduleSpawn = setTimeout(() => { this.spawn() }, 100);
+            this.scheduleSpawn = setTimeout(() => { this.spawn() }, this.spawnTime * 1000);
         }
 
         return !downCollision;
@@ -99,20 +95,20 @@ export default class Board {
     }
 
     rotatePiece() {
-        let oldState = this.activePiece.currentState;
+        let oldState = this.activePiece.state;
 
         this.erasePiece();
 
-        this.activePiece.changeState();
+        this.activePiece.rotate();
 
         let collisionBorder = this.collider.getBorderCollision(this.activePiece);
         let collisionPiece = this.collider.getPieceCollision(this.activePiece);
 
+        console.log(collisionBorder + " " + collisionPiece);
+
         if (collisionBorder != false || collisionPiece != false) {
-            this.activePiece.currentState = oldState;
-            if (collisionBorder != false && collisionPiece != false) {
-                // Do nothing, we cannot recover!
-            } else if (collisionBorder != false) {
+            this.activePiece.state = oldState;
+            if (collisionBorder != false) {
                 this.__recover(collisionBorder);
             } else if (collisionPiece != false) {
                 this.__recover(collisionPiece);
@@ -139,7 +135,7 @@ export default class Board {
         let completeLine = false;
         for (let i = 0; i < this.dim.height; i++) {
             for (let j = 0; j < this.dim.width; j++) {
-                completeLine = (this.state[i][j] == 1);
+                completeLine = (this.state[i][j] != 0);
                 if (!completeLine) break;
             }
             if (completeLine) completeLines.push(i);
@@ -164,24 +160,24 @@ export default class Board {
         const board = this.state;
         const piecePos = this.activePiece.position;
 
-        const horizontalLength = this.activePiece.states[this.activePiece.currentState][0].length;
-        const verticalLength = this.activePiece.states[this.activePiece.currentState].length;
+        const horizontalLength = this.activePiece.state[0].length;
+        const verticalLength = this.activePiece.state.length;
 
         const xlim = { start: piecePos.x, end: piecePos.x + horizontalLength};
         const ylim = { start: piecePos.y, end: piecePos.y + verticalLength};
         
-        let piece = this.activePiece.states[this.activePiece.currentState];
+        let piece = this.activePiece.state;
 
         for (let i = ylim.start; i < ylim.end; i++) {
             for (let j = xlim.start; j < xlim.end; j++) {
                 const pieceCell = piece[i - ylim.start][j - xlim.start];
-                if (pieceCell == 1) board[i][j] = (removePiece) ? 0 : 1;
+                if (pieceCell != 0) board[i][j] = (removePiece) ? 0 : pieceCell;
             }
         }
     }
 
     update(dt, t) {
-        if (t - this.lastUpdate > 0.2) {
+        if (t - this.lastUpdate > this.velY) {
             this.lastUpdate = t;
             this.movePiece("down");
         }
