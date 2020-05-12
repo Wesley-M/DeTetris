@@ -1,8 +1,9 @@
-import pieces_states from "../res/config/pieces_states.js"
+import { pieces_states } from "../../res/config/settings.js";
 
 export default class Piece {
-    constructor(position) {
-        this.state = this.chooseRandomState();
+    constructor(position, painter, name) {
+        this.name = name;
+        this.state = this.chooseState(painter);
         this.position = position;
         this.disabled = false;
     }
@@ -22,9 +23,18 @@ export default class Piece {
         this.state = newState;
     }
 
-    chooseRandomState() {
+    chooseState(painter) {
         let keys = Object.keys(pieces_states);
-        let randomIndex = keys[ Math.round(Math.random() * 100) % keys.length ];
-        return pieces_states[randomIndex];
+
+        let coloredPiece = false;
+        
+        if (this.name != undefined && keys.includes(this.name)) {
+            coloredPiece = painter.colorPiece(this.name, pieces_states[this.name]);
+        } else {
+            let randomIndex = keys[ Math.round(Math.random() * 100) % keys.length ];
+            coloredPiece = painter.colorPiece(randomIndex, pieces_states[randomIndex]);
+        }
+
+        return coloredPiece;
     };
 }

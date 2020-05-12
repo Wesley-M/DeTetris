@@ -1,15 +1,17 @@
 import Text from "../utils/Text.js"
 import Texture from "../utils/Texture.js"
-import Sprite from "../utils/Sprite.js"
 import Board from "../Board.js"
+import Piece from "../Piece.js"
 
-export default class CanvasRenderer {
-    constructor (w, h) {
+export default class Renderer {
+    constructor (w, h, painter) {
         const canvas = document.createElement("canvas");
 
         this.w = canvas.width = w;
         this.h = canvas.height = h;
-        
+    
+        this.painter = painter;
+
         this.view = canvas;
 
         this.ctx = canvas.getContext("2d");
@@ -53,7 +55,10 @@ export default class CanvasRenderer {
     renderLeaf(child, ctx) {
         if (child instanceof Text) this.renderText(child, ctx);
         else if (child instanceof Texture) this.renderTexture(child, ctx);
-        else if (child instanceof Board) this.renderBoard(child, ctx);
+        else if (child instanceof Board) { 
+            this.renderBoard(child, ctx); 
+            this.renderNextPiece(child, ctx);
+        }
     }
 
     renderText(child, ctx) {
@@ -70,27 +75,24 @@ export default class CanvasRenderer {
 
     renderBoard(child, ctx) {
         let pos = {x: 0, y: 0};
-        
-        let pieceColors = [
-            "black", "#E3B505", "#95190C", "#610345", "#107E7D", "#044B7F", "#6D1A36"
-        ];
 
         ctx.strokeStyle = "rgba(128, 128, 128, 0.2)";
         ctx.lineWidth = 0.5;
+
+        // Rendering the board
 
         for (let line of child.state) {
             for (let column of line) {
                 ctx.save();
 
-                ctx.fillStyle = pieceColors[column];
-
-                ctx.fillRect(pos.x, pos.y, this.pieceSide, this.pieceSide);
-
+                ctx.fillStyle = (column == 0) ? "black" : this.painter.getColor(column); 
+                
                 if (column != 0) {
                     ctx.lineWidth = 2;
                     ctx.strokeStyle = "rgb(0, 0, 0)";
                 }
 
+                ctx.fillRect(pos.x, pos.y, this.pieceSide, this.pieceSide);
                 ctx.strokeRect(pos.x, pos.y, this.pieceSide, this.pieceSide);
 
                 ctx.restore();
@@ -99,6 +101,35 @@ export default class CanvasRenderer {
             }
 
             pos.x = 0;
+            pos.y += this.pieceSide;
+        }
+    }
+
+    renderNextPiece(board, ctx) {
+        let pos = {x: board.dim.width * this.pieceSide + 70 , y: 0};
+
+        ctx.strokeStyle = "black";
+        ctx.lineWidth = 0.5;
+
+        // Rendering the board
+
+        for (let line of board.nextPiece.state) {
+            for (let column of line) {
+                ctx.save();
+
+                ctx.fillStyle = (column == 0) ? "black" : this.painter.getColor(column); 
+                
+                if (column != 0) ctx.lineWidth = 2;
+
+                ctx.fillRect(pos.x, pos.y, this.pieceSide, this.pieceSide);
+                ctx.strokeRect(pos.x, pos.y, this.pieceSide, this.pieceSide);
+
+                ctx.restore();
+
+                pos.x += this.pieceSide;
+            }
+
+            pos.x = board.dim.width * this.pieceSide + 70;
             pos.y += this.pieceSide;
         }
     }

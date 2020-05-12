@@ -83,7 +83,7 @@ export default class Collider {
 
         for (let j = 0; j < verticalLength; j++) {
             for (let i = 0; i < horizontalLength; i++) {
-                if (currY + j < this.board.dim.height) {
+                if (currY + j + offset.y < this.board.dim.height) {
                     let adjacentPiece = this.board.state[currY + j + offset.y][currX + i + offset.x];
                     if (pieceMtx[j][i] != 0) {
                         if (eval(andCondition) && adjacentPiece != 0) {

@@ -1,16 +1,44 @@
 export default class Sound {
-    constructor(path) {
-        this.playing = false; 
-        this._element = document.createElement("audio");
-        this._element.style.display = "none"; 
-        this._path = path;
-    }
 
+    constructor(filename, volume, loop=false) {
+      this._audioElement = document.createElement("audio");
+      this._configAudioElement(filename, volume, loop);
+      this.running = false;
+    }
+  
+    _configAudioElement(filename, volume, loop) {
+      this._audioElement.src = filename;
+      this._audioElement.volume = volume;
+      this._audioElement.setAttribute("preload", "auto");
+      this._audioElement.setAttribute("controls", "none");
+      this._audioElement.style.display = "none";
+      this._audioElement.loop = loop;
+      document.body.appendChild(this._audioElement);
+    }
+  
     play() {
-        this._element.play()
+      this.resetTime();
+      this.stop();
+      this._audioElement.play();
+      this.running = true;
+    }
+  
+    stop() {
+      this._audioElement.pause();
+      this.running = false;
     }
 
-    stop() {
-        this._element.pause();
+    resetTime() {
+        this._audioElement.currentTime = 0;
     }
-}
+  
+    loop(type) {
+      this._audioElement.loop = type;
+    }
+  
+    toggle() {
+      if (this.running) this.stop();
+      else this.play();
+    }
+  
+  }

@@ -4,10 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="res/main.css">
-    <title>Sherlock Tetris</title>
+    <title>DeTetris</title>
 </head>
 <body>
-    <div id="main-container">
+    <div id="terminal-container">
+
+    </div>
+
+    <div id="tetris-container">
         <div id="tutorial" class="box">
             <span> <img src="./res/images/space_bar.svg" id="space_bar" alt="space bar" title="Space: Rotate"></span>
             <span> <img src="./res/images/arrow_down.svg" id="arrow_down" alt="arrow_down" title="Arrow down: Accelerate"></span>
@@ -27,7 +31,22 @@
         </div>
     </div>
 
+    <div id="gameinit-container">
+        <p> DeTetris </p>
+        <p> My life is spent in one long effort to escape from the commonplaces of existence. 
+            These little problems help me to do so. <br> (Sherlock Holmes) </p>
+        <img src="./res/images/play.svg" title="Play the game" id="play">
+    </div>
+
+    <div id="gameover-container">
+        <p> Game Over </p>
+        <p>Sorry dear detective, maybe you'll win later!</p> 
+        <img src="./res/images/replay.svg" title="Replay the game" id="replay">
+    </div>
+
+
     <script src="src/main.js" type="module"></script>
+    <script src="res/scripts/show_text_effect.js" type="module"></script>
 </body>
 </html>
 

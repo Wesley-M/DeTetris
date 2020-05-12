@@ -1,16 +1,28 @@
 import Piece from "./Piece.js";
 import Collider from "./utils/Collider.js"
+import { pieces_states } from "../../res/config/settings.js";
 
 export default class Board {
-    constructor(w, h) {
-        this.state = Array(h).fill().map(()=>Array(w).fill(0));
-        this.collider = new Collider(this);
-        
+    constructor(w, h, painter, sounds) {
         this.dim = {width: w, height: h};
         
-        this.lastUpdate = 0;
-        this.activePiece = false;
+        this.state = Array(h).fill().map(()=>Array(w).fill(0));
         
+        this.collider = new Collider(this);
+        this.painter = painter;
+        this.sounds = sounds;
+        
+        this.lastUpdate = 0;
+        this.completeLines = 0;
+
+        this.activePiece = false;
+        this.gameOver = false;
+
+        this.pause = false;
+
+        this.nextPieceName = "";
+        this.nextPiece = false;
+    
         this.velY = 0.3;
         this.spawnTime = this.velY / 25;
 
@@ -19,25 +31,46 @@ export default class Board {
 
     spawn() {
         let position = {x: Math.floor(this.dim.width / 2), y: 0};
-        this.activePiece = new Piece(position);
+
+        if (this.nextPieceName !== "") {
+            this.activePiece = new Piece(position, this.painter, this.nextPieceName);
+        } else {
+            this.activePiece = new Piece(position, this.painter);
+        }
+
+        let keys = Object.keys(pieces_states);
+        this.nextPieceName = keys[ Math.round(Math.random() * 100) % keys.length ];
+        this.nextPiece = new Piece(position, this.painter, this.nextPieceName);
     }
 
     movePiece(dir) {
         let moved = false;
 
-        switch(dir) {
-            case "left":
-                moved = this.__moveLeft();
-                break;
-            case "right":
-                moved = this.__moveRight();
-                break;
-            case "down":
-                moved = this.__moveDown();
-                if (!moved) this.removeCompleteLines(); 
+        if (!this.pause) {
+            switch(dir) {
+                case "left":
+                    moved = this.__moveLeft();
+                    break;
+                case "right":
+                    moved = this.__moveRight();
+                    break;
+                case "down":
+                    moved = this.__moveDown();
+                    if (!moved) { 
+                        this.removeCompleteLines();
+                        this.sounds["collision"].play();
+                        this.checkGameOver(); 
+                    } 
+            }
         }
 
         return moved;
+    }
+
+    checkGameOver() {
+        if (this.activePiece.position.y == 0) {
+            this.gameOver = true;
+        }
     }
 
     __moveLeft() {
@@ -133,6 +166,7 @@ export default class Board {
     __getCompleteLines() {
         let completeLines = [];
         let completeLine = false;
+        
         for (let i = 0; i < this.dim.height; i++) {
             for (let j = 0; j < this.dim.width; j++) {
                 completeLine = (this.state[i][j] != 0);
@@ -140,20 +174,38 @@ export default class Board {
             }
             if (completeLine) completeLines.push(i);
         }
+
+        this.completeLines += completeLines.length;
+
         return completeLines;
     }
 
     removeCompleteLines() {
         let completeIndexes = this.__getCompleteLines().sort();
-        let j = 0;
-        for (let i = 0; i < this.dim.height; i++) {
-            if (i == completeIndexes[j]) {
-                this.state.splice(i, 1);
+        let length = completeIndexes.length;
+
+        let j = 1;
+
+        completeIndexes.forEach((completeIndex, i) => {
+            setTimeout(() => {
+                this.state.splice(completeIndex, 1);
                 this.state.unshift(Array(this.dim.width).fill(0));
-                j++;
-            }
-        }
-        return completeIndexes.length;
+                this.sounds["complete_line"].play();
+
+                if (i == completeIndexes.length - 1) this.pause = false;
+            
+            }, j * 500);
+            j = j + 1;
+        });
+
+        if (completeIndexes.length != 0) this.pause = true;
+
+        return length;
+    }
+
+    delay(ms) {
+        const startPoint = new Date().getTime()
+        while (new Date().getTime() - startPoint <= ms) {/* wait */}
     }
 
     updatePieceOnBoard({removePiece}={removePiece: false}) {

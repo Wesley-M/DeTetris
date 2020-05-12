@@ -1,5 +1,5 @@
 import KeyControls from "./controls/KeyControls.js"
-import CanvasRenderer from "./renderer/CanvasRenderer.js"
+import Renderer from "./renderer/Renderer.js"
 import Container from "./utils/Container.js"
 import Text from "./utils/Text.js"
 import Texture from "./utils/Texture.js"
@@ -9,7 +9,7 @@ import Board from "./Board.js"
 
 export default { 
     Container,
-    CanvasRenderer,
+    Renderer,
     Text,
     Texture,
     Sprite,
