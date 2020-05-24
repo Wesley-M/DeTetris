@@ -28,14 +28,14 @@ export default class Painter {
      * Using Durstenfeld shuffle algorithm.
      */
     __randomizeColorsPositions(colors) {
-        for (var i = colors.length - 1; i > 0; i--) {
-            var j = Math.floor(Math.random() * (i + 1));
-            var temp = colors[i];
-            colors[i] = colors[j];
-            colors[j] = temp;
+        for (let i = colors.length - 1; i > 0; i--) {
+            let j = Math.floor(Math.random() * (i + 1));
+            // swap variables in ES6+
+            [colors[i], colors[j]] = [colors[j], colors[i]]
         }
         return colors;
     }
+
 
     getColor(index) {
         if (index >= 0 && index < this.colors.length)
