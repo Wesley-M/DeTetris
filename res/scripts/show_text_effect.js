@@ -1,5 +1,3 @@
-import { colors } from "../config/settings.js"
-
 function colorText(element) {
     let containers = document.querySelectorAll(element);
 

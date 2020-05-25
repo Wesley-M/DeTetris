@@ -1,7 +1,6 @@
 import Text from "../utils/Text.js"
 import Texture from "../utils/Texture.js"
 import Board from "../Board.js"
-import Piece from "../Piece.js"
 
 export default class Renderer {
     constructor (w, h, painter) {
