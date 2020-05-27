@@ -63,7 +63,6 @@ const vividColors = [
 
 const BOARD_WIDTH = 15;
 const BOARD_HEIGHT = 20;
-
 const PIECE_DIMENSION = 20;
 
 const sounds = {
