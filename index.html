@@ -4,19 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="res/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tangerine:wght@700&display=swap" rel="stylesheet">
     <title>DeTetris</title>
 </head>
 <body>
-    <div id="terminal-container">
-
-    </div>
-
     <div id="tetris-container">
-        <div id="tutorial" class="box">
-            <span> <img src="./res/images/space_bar.svg" id="space_bar" alt="space bar" title="Space: Rotate"></span>
-            <span> <img src="./res/images/arrow_down.svg" id="arrow_down" alt="arrow_down" title="Arrow down: Accelerate"></span>
-            <span> <img src="./res/images/arrow_left.svg" id="arrow_left" alt="arrow_left" title="Arrow left: Go to left"></span>
-            <span> <img src="./res/images/arrow_right.svg" id="arrow_right" alt="arrow_right" title="Arrow right: Go to right"></span>
+        <div id="event-container" class="box">
         </div>
 
         <div id="game-container">
@@ -27,7 +20,11 @@
             </div>
         </div>
 
-        <div id="event-container" class="box">
+        <div id="tutorial" class="box">
+            <span class="control"> <img src="./res/images/space_bar.svg" id="space_bar" alt="space bar" title="Space: Rotate"></span>
+            <span class="control"> <img src="./res/images/arrow_down.svg" id="arrow_down" alt="arrow_down" title="Arrow down: Accelerate"></span>
+            <span class="control"> <img src="./res/images/arrow_left.svg" id="arrow_left" alt="arrow_left" title="Arrow left: Go to left"></span>
+            <span class="control"> <img src="./res/images/arrow_right.svg" id="arrow_right" alt="arrow_right" title="Arrow right: Go to right"></span>
         </div>
     </div>
 

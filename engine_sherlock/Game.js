@@ -1,3 +1,5 @@
+import colorText from "../res/scripts/show_text_effect.js"
+
 import Sherlock from "../engine_sherlock/index.js";
 
 const { Container, KeyControls, Board } = Sherlock;
@@ -6,14 +8,11 @@ const STEP = 1 / 60;
 const MAX_FRAME = STEP * 5;
 
 class Game {
-    constructor (w, h, painter, gameRenderer, sounds, parent = "#board") {
-        this.__init(w, h, painter, gameRenderer, sounds, parent);
+    constructor (painter, gameRenderer, sounds, parent = "#board") {
+        this.__init(painter, gameRenderer, sounds, parent);
     }
 
-    __init(w, h, painter, gameRenderer, sounds, parent = "#board") {
-        this.w = w;
-        this.h = h;
-        
+    __init(painter, gameRenderer, sounds, parent = "#board") {
         this.painter = painter;
         this.gameRenderer = gameRenderer;
 
@@ -21,10 +20,7 @@ class Game {
 
         this.scene = new Container();
 
-        this.board = new Board(15, 
-                               20, 
-                               this.painter,
-                               this.sounds);
+        this.board = new Board(this.painter, this.sounds);
 
         this.score = 0;
 
@@ -40,31 +36,39 @@ class Game {
     __initActions() {
         const controls = new KeyControls();
     
-        controls.addKeyAction("keydown", 37, () => {
-            this.sounds["move"].play();
-            this.__selectKey("#arrow_left");
-            this.board.movePiece("left"); 
-        }, false);
-
-        controls.addKeyAction("keydown", 39, () => { 
-            this.sounds["move"].play();
-            this.__selectKey("#arrow_right");
-            this.board.movePiece("right"); 
-        }, false);
-
-        controls.addKeyAction("keydown", 40, () => { 
-            this.__selectKey("#arrow_down");
-            this.board.velY = 0.03; 
-        }, false);
-
-        controls.addKeyAction("keyup", 40, () => { this.board.velY = 0.3; }, false);
-
-        controls.addKeyAction("keydown", 32, () => { 
-            this.__selectKey("#space_bar");
-            this.board.rotatePiece(); 
-        }, true);
+        controls.addKeyAction("keydown", 37, this.moveLeft, false);
+        controls.addKeyAction("keydown", 39, this.moveRight, false);
+        controls.addKeyAction("keydown", 40, this.accelerate, false);
+        controls.addKeyAction("keyup", 40, this.resetVelocity, false);
+        controls.addKeyAction("keydown", 32, this.rotate, true);
 
         controls.init();
+    }
+
+    moveLeft = () => {
+        this.sounds["move"].play();
+        this.__selectKey("#arrow_left");
+        this.board.movePiece("left"); 
+    }
+
+    moveRight = () => {
+        this.sounds["move"].play();
+        this.__selectKey("#arrow_right");
+        this.board.movePiece("right"); 
+    }
+
+    accelerate = () => {
+        this.__selectKey("#arrow_down");
+        this.board.velY = 0.03; 
+    }
+
+    resetVelocity = () => {
+        this.board.velY = 0.3;
+    }
+
+    rotate = () => {
+        this.__selectKey("#space_bar");
+        this.board.rotatePiece(); 
     }
 
     __selectKey(el) {
@@ -104,6 +108,8 @@ class Game {
     gameOver() {
         if (!this.pause) {
             document.querySelector("#gameover-container").style.display = "flex";
+            
+            colorText("#gameover-container p" ,"#353434");
 
             this.sounds["background"].stop();
             this.sounds["game_over"].play();
@@ -118,7 +124,7 @@ class Game {
         document.querySelector("#replay").addEventListener("click", (e) => {
             document.querySelector("#gameover-container").style.display = "none";
             this.sounds["game_over"].stop();
-            this.__init(this.w, this.h, this.painter, this.gameRenderer, this.sounds, "#game-container");
+            this.__init(this.painter, this.gameRenderer, this.sounds);
             this.pause = false;
         });
     }

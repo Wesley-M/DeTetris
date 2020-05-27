@@ -1,12 +1,12 @@
 import Piece from "./Piece.js";
 import Collider from "./utils/Collider.js"
-import { pieces_states } from "../../res/config/settings.js";
+import { pieces_states, BOARD_WIDTH, BOARD_HEIGHT } from "./config/settings.js";
 
 export default class Board {
-    constructor(w, h, painter, sounds) {
-        this.dim = {width: w, height: h};
+    constructor(painter, sounds) {
+        this.dim = {width: BOARD_WIDTH, height: BOARD_HEIGHT};
         
-        this.state = Array(h).fill().map(()=>Array(w).fill(0));
+        this.state = Array(this.dim.height).fill().map(()=>Array(this.dim.width).fill(0));
         
         this.collider = new Collider(this);
         this.painter = painter;

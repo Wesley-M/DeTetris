@@ -3,10 +3,6 @@ export default class Painter {
         this.colors = this.__randomizeColorsPositions(allColors);
         this.colorsPerPiece = Math.floor(allColors.length / Object.keys(pieces_states).length);
         this.colorStates = this.__getColorStates(pieces_states);
-
-        console.log(this.colors);
-        console.log(this.colorsPerPiece);
-        console.log(this.colorStates);
     }
 
     __getColorStates(pieces_states) {

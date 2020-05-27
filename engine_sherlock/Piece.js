@@ -1,4 +1,4 @@
-import { pieces_states } from "../../res/config/settings.js";
+import { pieces_states } from "./config/settings.js";
 
 export default class Piece {
     constructor(position, painter, name) {
@@ -31,8 +31,8 @@ export default class Piece {
         if (this.name != undefined && keys.includes(this.name)) {
             coloredPiece = painter.colorPiece(this.name, pieces_states[this.name]);
         } else {
-            let randomIndex = keys[ Math.round(Math.random() * 100) % keys.length ];
-            coloredPiece = painter.colorPiece(randomIndex, pieces_states[randomIndex]);
+            this.name = keys[ Math.round(Math.random() * 100) % keys.length ];
+            coloredPiece = painter.colorPiece(this.name, pieces_states[this.name]);
         }
 
         return coloredPiece;

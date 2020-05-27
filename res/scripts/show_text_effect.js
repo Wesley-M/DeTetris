@@ -1,4 +1,4 @@
-function colorText(element) {
+export default function colorText(element, textColor) {
     let containers = document.querySelectorAll(element);
 
     containers.forEach((container) => {
@@ -23,10 +23,8 @@ function colorText(element) {
             }   
 
             let char = container.querySelector(`.letter-${letterIndex % chars.length}`);
-            char.style.color = "#fff";
+            char.style.color = textColor;
             letterIndex += 1;
         }, 30);
     });
 }
-
-colorText("#gameinit-container p");

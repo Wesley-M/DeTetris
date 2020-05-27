@@ -1,4 +1,4 @@
-import Sound from "../../engine_sherlock/utils/Sound.js"
+import Sound from "../utils/Sound.js"
 
 const pieces_states = {
     "point": [
@@ -29,19 +29,16 @@ const pieces_states = {
     ]
 }
 
-const vividColors = [
-    "#BDB76B",
-    "#DAA520",
-    "#B8860B",
-    "#8B4513",
-    "#A0522D",
-    "#BC8F8F",
-    "#CD853F",
-    "#D2691E",
-    "#F4A460"
+const colors = [
+    "#000000",
+    "#191919",
+    "#323232",
+    "#4c4c4c",
+    "#666666",
+    "#7f7f7f"
 ];
 
-const colors = [
+const vividColors = [
     "#95190C", // Falu Red
     "#3F190C", // Brown pod
     "#C2190C", // Free speech red
@@ -64,6 +61,11 @@ const colors = [
     "#CD7F32" // Bronze
 ];
 
+const BOARD_WIDTH = 15;
+const BOARD_HEIGHT = 20;
+
+const PIECE_DIMENSION = 20;
+
 const sounds = {
     "background": new Sound("../res/sounds/back.mp3", 0.4, true),
     "collision": new Sound("../res/sounds/collision.wav", 0.8, false),
@@ -72,4 +74,4 @@ const sounds = {
     "complete_line": new Sound("../res/sounds/completeLine.mp3", 1, false),
 };
 
-export { pieces_states, colors, vividColors, sounds };
+export { pieces_states, colors, vividColors, sounds, BOARD_WIDTH, BOARD_HEIGHT, PIECE_DIMENSION };

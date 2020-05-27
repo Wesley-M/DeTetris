@@ -1,14 +1,12 @@
-* {
-    font-family: 'Courier New', Courier, monospace;
-}
-
 body {
     margin: 0;
     padding: 0;
     width: 100%;
     height: 100vh;
 
-    background-color: rgb(218, 217, 194);
+    font-family: 'Courier New', Courier, monospace;
+
+    background-color: #1d1c1c;
 
     display: flex;
     align-items: center;
@@ -17,20 +15,13 @@ body {
     box-sizing: border-box;
 }
 
-#terminal-container {
-    width: 35%;
-    height: 90vh;
-    background: white;
-}
-
 #tetris-container {
-    width: 65%;
-    height: 90vh;
+    width: 100%;
+    height: 100vh;
 
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
 }
 
 #tutorial {
@@ -40,34 +31,40 @@ body {
     display: flex;
     flex-direction: row;
 
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
+    align-items: center;
+    justify-content: space-around;
 }
 
-#tutorial span {
+.control {
     flex-direction: column;
     display: flex;
     align-items: center;
     justify-content: center;
 
-    height: 100%;
-    width: 25%;
+    height: 50px;
+    width: 8%;
+
+    border-radius: 2px;
+    background: #d6d6d6;
+    box-shadow: 0px 0px 3px 1px #666666;
 }
 
-#tutorial span img {
-    width: 30px;
-    height: 30px;
+.control:hover {
+    filter: invert(5%);
+    box-shadow: 0px 0px 4px 1px #4b4949;
+    cursor: pointer;
+}
 
-    border-radius: 7px;
+.control img {
+    width: 40px;
+    height: 40px;
     padding: 5px;
-    background-color: white;
-
-    transition: filter 100ms linear;
+    filter: invert(10%);
 }
 
 #game-container {
     width: 45%;
-    height: 55vh;
+    height: 65vh;
 
     display: flex;
     flex-direction: row;
@@ -76,7 +73,7 @@ body {
 }
 
 #board {
-    width: 70%;
+    width: 80%;
     height: 100%;
 
     display: flex;
@@ -84,12 +81,10 @@ body {
     align-items: center;
     justify-content: center;
     z-index: 2;
-
-    border-bottom-left-radius: 10px;
 }
 
 #stats-container {
-    width: 30%;
+    width: 20%;
     height: 100%;
 
     display: flex;
@@ -101,7 +96,7 @@ body {
     width: 100%;
     height: 30%;
 
-    font-size: 1em;
+    font-size: 1.3em;
 
     display: flex;
     align-items: center;
@@ -110,7 +105,8 @@ body {
     text-transform: uppercase;
     font-weight: bolder;
 
-    background-color: black;
+    background-color: white;
+    color: #333232;
 }
 
 #stats {
@@ -123,23 +119,20 @@ body {
     color: white;
 
     text-align: center;
-
-    border-bottom-right-radius: 10px;
 }
 
 #event-container {
-    margin-top: 2%;
     width: 45%;
-    height: 15vh;
+    height: 25vh;
 }
 
 .box {
-    background-color: #272323; 
-    box-shadow: inset 0px 0px 4px 0px gray;
+    background-color: whitesmoke; 
+    box-shadow: inset 0px 0px 0px 1px rgb(182, 182, 182);
 }
 
 #gameover-container, #gameinit-container {
-    background: black;
+    background: whitesmoke;
 
     width: 100%;
     height: 100vh;
@@ -148,6 +141,9 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+
+    font-family: 'Tangerine', cursive !important;
+    font-size: 1.7em;
 
     position: absolute;
     z-index: 10;
@@ -167,22 +163,27 @@ canvas {
 }
 
 #gameover-container p, #gameinit-container p {
-    color: white;
+    color: whitesmoke;
     text-align: center;
 }
 
 #gameinit-container p {
-    color: black;
     padding-left: 10%;
     padding-right: 10%;
     font-size: 1.6em
 }
 
 #replay, #play {
-    width: 3em;
-    height: 3em;
+    width: 2.3em;
+    height: 2.3em;
+    filter: invert(85%);
+
+    transition: all 250ms;
 }
 
-#play:hover {
+#play:hover, #replay:hover {
+    width: 2.5em;
+    height: 2.5em;
+    filter: invert(95%);
     cursor: pointer;
 }
